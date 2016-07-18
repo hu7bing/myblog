@@ -1,0 +1,12 @@
+{#
+{% extends "base.html" %}
+ #}
+
+<div class="tag_nav list-unstyled">
+    {% for u in Tag.query.filter(Tag.count).all() %}
+        <li class="active"><a href="{{ url_for('.tags', tagname=u.name) }}" style="font-size:{{ Cloud.get_tag_font_size(u.count) }}px;
+color:{{ Cloud.get_tag_color(u.count) }}">{{ u.name }}</a></li>
+    {% endfor %}
+    <div class="clearfix"></div>
+</div>
+

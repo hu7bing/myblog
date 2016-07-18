@@ -1,0 +1,64 @@
+
+    {% for post in posts %}
+
+    <article class="post post-1">
+        <header class="entry-header">
+            <h1 class="entry-title">
+                <a href="#">{{ post.b_title }}</a>
+            </h1>
+            <div class="entry-meta">
+
+                <span class="post-category"><a href="{{ url_for('.Category_name', name=post.categorys.name) }}">{{  post.categorys.name }}</a></span>
+
+                <span class="post-date">{{ moment(post.timestamp).fromNow() }}</span>
+
+
+                <span class="post-author"><a href="{{ url_for('.user', username=post.author.username) }}">{{ post.author.username }}</a></span>
+
+
+                {% if 1 %}
+
+                {% for u in post.tags.all() %}
+
+
+                    <span class="comments-link"><a href="{{ url_for('.tags', tagname=u.name) }}">{{ u.name }}</a></span>
+
+                {% endfor %}
+                {% endif %}
+
+                    </a>
+                </span>
+            </div>
+        </header>
+        <div class="entry-content clearfix">
+            <p> {% if post.body_html %}
+                    {{ post.body_html | safe }}
+                {% else %}
+                    {{ post.body }}
+                {% endif %}
+            </p>
+            <div class="read-more cl-effect-14">
+                <a href="{{ url_for('.post', id=post.id) }}" class="more-link">Continue reading <span class="meta-nav">→</span></a>
+            </div>
+        </div>
+        <div class="post-footer">
+                {% if current_user == post.author %}
+                <a href="{{ url_for('.edit', id=post.id) }}">
+                    <span class="label label-primary">Edit</span>
+                </a>
+                {% elif current_user.is_administrator() %}
+                <a href="{{ url_for('.edit', id=post.id) }}">
+                    <span class="label label-danger">Edit [Admin]</span>
+                </a>
+                {% endif %}
+                <a href="{{ url_for('.post', id=post.id) }}">
+                    <span class="label label-default">Permalink</span>
+                </a>
+                <a href="{{ url_for('.post', id=post.id) }}#comments">
+                    <span class="label label-primary">{{ post.comments.count() }} Comments</span>
+                </a>
+        </div>
+    </article>
+
+    {% endfor %}
+
